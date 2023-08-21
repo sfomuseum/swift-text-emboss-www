@@ -6,7 +6,7 @@ A simple HTTP server wrapping the `sfomuseum/swift-text-emboss` package.
 
 This is experimental work in progress. It is absolutely not ready for production use.
 
-It lacks proper error reporting, validation, proper temporary files or any kind of clean up. It has no authentication or authorization hooks.
+It has only minimal error reporting and validation. It has no authentication or authorization hooks.
 
 ## Example
 

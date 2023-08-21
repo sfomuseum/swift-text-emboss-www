@@ -3,6 +3,7 @@ import ArgumentParser
 import AppKit
 import TextEmboss
 import Swifter
+import Logging
 
 public enum Errors: Error {
     case notFound
@@ -18,17 +19,28 @@ struct TextExtractServer: ParsableCommand {
     func run() throws {
         
         let server = HttpServer();
+        let logger = Logger(label: "org.sfomuseum.text-www")
         
         server.post["/upload"] = { r in
-            
-            print("UPLOAD")
-            
+                        
             if let myFileMultipart = r.parseMultiPartFormData().filter({ $0.name == "my_file" }).first {
-            // if let myFileMultipart = r.parseMultiPartFormData().first {
-
-                    
+                
+                var ext = ".txt"
+                
+                switch (myFileMultipart.headers["content-type"]){
+                case "image/jpeg":
+                        ext = ".jpg"
+                case "image/png":
+                    ext = ".png"
+                default:
+                    return .badRequest(.text("Invalid format"))
+                }
+                
+                let uuid = UUID().uuidString
+                let fname = uuid + ext
+                            
                 guard let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
-                    print("SAD 1")
+                    logger.error("Failed to derive documents directory")
                     return .internalServerError
                 }
                 
@@ -36,24 +48,28 @@ struct TextExtractServer: ParsableCommand {
                     return NSData(bytes: pointer.baseAddress, length: myFileMultipart.body.count)
                 }
                 
-                guard let fileSaveUrl = NSURL(string: "test.jpg", relativeTo: documentsUrl) else {
-                    print("SAD 2")
+                guard let fileSaveUrl = NSURL(string: fname, relativeTo: documentsUrl) else {
+                    logger.error("Failed to derive file save URL")
                     return .internalServerError
                 }
                 
-                print(fileSaveUrl.absoluteString!)
-                print(fileSaveUrl.path!)
                 data.write(to: fileSaveUrl as URL, atomically: true)
                 
+                defer {
+                    do {
+                        try FileManager.default.removeItem(at: fileSaveUrl as URL)
+                    } catch {
+                        logger.error("Failed to remove \(fileSaveUrl.path!), \(error)")
+                    }
+                }
+                                
                 guard let im = NSImage(byReferencingFile:fileSaveUrl.path!) else {
-                    // throw(Errors.invalidImage)
-                    print("SAD 3")
-                    return .internalServerError
+                    logger.error("Invalid image")
+                    return .badRequest(.text("Invalid image"))
                 }
                 
                 guard let cgImage = im.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-                    print("SAD 4")
-                    // throw(Errors.cgImage)
+                    logger.error("Failed to derive CG image")
                     return .internalServerError
                 }
                 
@@ -62,17 +78,14 @@ struct TextExtractServer: ParsableCommand {
                 
                 switch rsp {
                 case .failure(let error):
-                    print("SAD 5 \(error)")
-                    // throw(error)
+                    logger.error("Failed to process image, \(error)")
                     return .internalServerError
                 case .success(let txt):
-                    // print(txt)
                     return .ok(.text(txt))
                 }
                 
             }
             
-            print("SAD 6")
             return .internalServerError
         }
 
@@ -80,10 +93,11 @@ struct TextExtractServer: ParsableCommand {
         
         do {
             try server.start(9099)
-            print("Server has started ( port = \(try server.port()) ). Try to connect now...")
+            logger.info("Server has started ( port = 9099). Try to connect now...")
             semaphore.wait()
         } catch {
             semaphore.signal()
+            logger.error("Failed to start server, \(error)")
             throw(error)
         }
         
