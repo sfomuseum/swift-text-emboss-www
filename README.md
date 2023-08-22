@@ -4,24 +4,44 @@ A simple HTTP server wrapping the `sfomuseum/swift-text-emboss` package.
 
 ## Important
 
-This is experimental work in progress. It is absolutely not ready for production use.
+This is experimental work in progress.
 
 It has only minimal error reporting and validation. It has no authentication or authorization hooks.
 
 ## Example
 
+Building the server.
+
 ```
-$> swift build && ./.build/debug/text-www
+$> swift build
 Building for debugging...
 [1/1] Compiling plugin GenerateManual
-Build complete! (0.12s)
-Server has started ( port = 9099 ). Try to connect now...
+Build complete! (0.11s)
+```
+
+Server start-up options.
+
+```
+$> ./.build/debug/text-www -h
+USAGE: text-extract-server [--port <port>] [--max_size <max_size>]
+
+OPTIONS:
+  --port <port>           The port number to start the server on. (default: 8080)
+  --max_size <max_size>   The maximum allowed size in bytes for uploads. (default: 10000000)
+  -h, --help              Show help information.
+```
+
+Running the server.
+
+```
+$> ./.build/debug/text-www -h
+2023-08-21T17:01:45-0700 info org.sfomuseum.text-www : [text_www] Server has started on port 8080 and is listening for requests.
 ```
 
 And then (given [this image](https://collection.sfomuseum.org/objects/1779445165/)):
 
 ```
-$> curl -F my_file=@1779445839_SfgRA4d51gAzgbClRnghkRVINAw2rOjF_b.jpg http://localhost:9099/upload
+$> curl -F image=@1779445839_SfgRA4d51gAzgbClRnghkRVINAw2rOjF_b.jpg http://localhost:8080/upload
 THE SAN FRANCISCO AIRPORTS COMMISSION PRESENTS
 TOYS THAT TRAVEL
 DECEMBER 14 -
