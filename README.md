@@ -34,14 +34,14 @@ OPTIONS:
 Running the server.
 
 ```
-$> ./.build/debug/text-www -h
+$> ./.build/debug/text-www
 2023-08-21T17:01:45-0700 info org.sfomuseum.text-www : [text_www] Server has started on port 8080 and is listening for requests.
 ```
 
 And then (given [this image](https://collection.sfomuseum.org/objects/1779445165/)):
 
 ```
-$> curl -F image=@1779445839_SfgRA4d51gAzgbClRnghkRVINAw2rOjF_b.jpg http://localhost:8080/upload
+$> curl -F image=@1779445839_SfgRA4d51gAzgbClRnghkRVINAw2rOjF_b.jpg http://localhost:8080/
 THE SAN FRANCISCO AIRPORTS COMMISSION PRESENTS
 TOYS THAT TRAVEL
 DECEMBER 14 -

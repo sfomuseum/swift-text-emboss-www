@@ -34,7 +34,7 @@ struct TextExtractServer: ParsableCommand {
             throw(Errors.fileManager)
         }
         
-        server.post["/upload"] = { r in
+        server.post["/"] = { r in
             
             guard let myFileMultipart = r.parseMultiPartFormData().filter({ $0.name == "image" }).first else {
                 logger.error("Request missing image parameter")
