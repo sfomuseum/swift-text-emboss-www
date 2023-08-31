@@ -15,7 +15,7 @@ public enum Errors: Error {
 }
 
 @available(macOS 10.15, *)
-struct TextExtractServer: ParsableCommand {
+struct TextEmbossServer: ParsableCommand {
     
     @Option(help:"The port number to start the server on.")
     var port: Int = 8080
@@ -26,7 +26,7 @@ struct TextExtractServer: ParsableCommand {
     func run() throws {
         
         let server = HttpServer();
-        let logger = Logger(label: "org.sfomuseum.text-www")
+        let logger = Logger(label: "org.sfomuseum.text-emboss-server")
         
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             logger.error("Failed to derive documents directory")
@@ -134,7 +134,7 @@ struct TextExtractServer: ParsableCommand {
 }
 
 if #available(macOS 10.15, *) {
-    TextExtractServer.main()
+    TextEmbossServer.main()
 } else {
     throw(Errors.unsupportedOS)
 }
