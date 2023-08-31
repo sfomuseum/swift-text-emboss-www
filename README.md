@@ -23,7 +23,7 @@ Server start-up options.
 
 ```
 $> ./.build/debug/text-emboss-server -h
-USAGE: text-extract-server [--port <port>] [--max_size <max_size>]
+USAGE: text-emboss-server [--port <port>] [--max_size <max_size>]
 
 OPTIONS:
   --port <port>           The port number to start the server on. (default: 8080)
