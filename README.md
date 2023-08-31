@@ -35,7 +35,7 @@ Running the server.
 
 ```
 $> ./.build/debug/text-emboss-server
-2023-08-21T17:01:45-0700 info org.sfomuseum.text-emboss-www : [text-emboss-www] Server has started on port 8080 and is listening for requests.
+2023-08-21T17:01:45-0700 info org.sfomuseum.text-emboss-www : [text-emboss-server] Server has started on port 8080 and is listening for requests.
 ```
 
 And then (given [this image](https://collection.sfomuseum.org/objects/1779445165/)):
@@ -52,5 +52,6 @@ SAN FRANCO INTERNATIONAL AIRPORT • NORTH TERMINAL STIR
 
 ## See also
 
-* https://github.com/httpswift/swifter
 * https://github.com/sfomuseum/swift-text-emboss
+* https://github.com/sfomuseum/swift-text-emboss-cli
+* https://github.com/httpswift/swifter
