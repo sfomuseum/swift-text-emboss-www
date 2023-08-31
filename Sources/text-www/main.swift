@@ -46,9 +46,12 @@ struct TextExtractServer: ParsableCommand {
                 return .badRequest(.text("Request too large"))
             }
             
-            var ext = ""
+            let ext = ""
             
-            switch (myFileMultipart.headers["content-type"]){
+            /*
+            let content_type = myFileMultipart.headers["content-type"];
+            
+            switch (content_type){
             case "image/jpeg":
                 ext = ".jpg"
             case "image/png":
@@ -58,8 +61,16 @@ struct TextExtractServer: ParsableCommand {
             case "image/tiff":
                 ext = ".tiff"
             default:
-                return .badRequest(.text("Invalid format"))
+                
+                guard let content_disposition = myFileMultipart.headers["content-disposition"] else {
+                    logger.error("Unsupported content type \(String(describing: content_type))")
+                    return .badRequest(.text("Invalid format"))
+                }
+                
+                let parts = content_disposition.components(separatedBy: ";")
+                print(parts)
             }
+            */
             
             let uuid = UUID().uuidString
             let fname = uuid + ext
