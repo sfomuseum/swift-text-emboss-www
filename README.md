@@ -1,4 +1,4 @@
-# text-www
+# swift-text-emboss-www
 
 A simple HTTP server wrapping the `sfomuseum/swift-text-emboss` package.
 
@@ -22,7 +22,7 @@ Build complete! (0.11s)
 Server start-up options.
 
 ```
-$> ./.build/debug/text-www -h
+$> ./.build/debug/text-emboss-server -h
 USAGE: text-extract-server [--port <port>] [--max_size <max_size>]
 
 OPTIONS:
@@ -34,7 +34,7 @@ OPTIONS:
 Running the server.
 
 ```
-$> ./.build/debug/text-www
+$> ./.build/debug/text-emboss-server
 2023-08-21T17:01:45-0700 info org.sfomuseum.text-www : [text_www] Server has started on port 8080 and is listening for requests.
 ```
 

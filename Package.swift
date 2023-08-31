@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "text-www",
+    name: "text-emboss-server",
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"),
         .package(url: "https://github.com/sfomuseum/swift-text-emboss", from: "0.0.1"),
@@ -15,7 +15,7 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .executableTarget(
-            name: "text-www",
+            name: "text-emboss-server",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "TextEmboss", package: "swift-text-emboss"),
