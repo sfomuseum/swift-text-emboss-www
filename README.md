@@ -35,7 +35,7 @@ Running the server.
 
 ```
 $> ./.build/debug/text-emboss-server
-2023-08-21T17:01:45-0700 info org.sfomuseum.text-www : [text_www] Server has started on port 8080 and is listening for requests.
+2023-08-21T17:01:45-0700 info org.sfomuseum.text-emboss-www : [text-emboss-www] Server has started on port 8080 and is listening for requests.
 ```
 
 And then (given [this image](https://collection.sfomuseum.org/objects/1779445165/)):
