@@ -1,32 +1,26 @@
-import Foundation
-import ArgumentParser
-import AppKit
-import TextEmboss
-import Swifter
 import Logging
+import Swifter
+import TextEmboss
 
-public enum Errors: Error {
-    case notFound
-    case invalidImage
-    case cgImage
-    case processError
-    case unsupportedOS
-    case fileManager
-}
-
-@available(macOS 10.15, *)
-struct TextEmbossServer: ParsableCommand {
+public class HTTPServer {
     
-    @Option(help:"The port number to start the server on.")
-    var port: Int = 8080
+    public var logger: Logger
+    public var threads: Int = 1
     
-    @Option(help:"The maximum allowed size in bytes for uploads.")
-    var max_size: Int = 10000000 // bytes
+    var host: String = "localhost"
+    var port: Int = 1234
     
-    func run() throws {
+    public init(logger: Logger, threads: Int) {
+        self.threads = threads
+        self.logger = logger
+    }
+    
+    public func Run(host: String, port: Int) throws {
+        
+        self.host = host
+        self.port = port
         
         let server = HttpServer();
-        let logger = Logger(label: "org.sfomuseum.text-emboss-server")
         
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             logger.error("Failed to derive documents directory")
@@ -111,9 +105,7 @@ struct TextEmbossServer: ParsableCommand {
                 return .internalServerError
             case .success(let txt):
                 return .ok(.text(txt))
-            }
-            
-            
+            }                        
         }
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -131,10 +123,4 @@ struct TextEmbossServer: ParsableCommand {
         }
         
     }
-}
-
-if #available(macOS 10.15, *) {
-    TextEmbossServer.main()
-} else {
-    throw(Errors.unsupportedOS)
 }

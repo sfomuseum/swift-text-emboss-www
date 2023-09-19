@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sfomuseum/swift-text-emboss",
       "state" : {
-        "revision" : "ea588c67c5fa0c998d55c3b2fdaa20825700c85b",
-        "version" : "0.0.1"
+        "revision" : "27e026dae2ccb5221543ab335f958412ae184ef1",
+        "version" : "0.0.2"
       }
     },
     {
