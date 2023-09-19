@@ -26,9 +26,13 @@ public class HTTPServer {
         
         let server = HttpServer();
         
+        // For reasons I do not understand a bunch of errors that should return
+        // as .internalServerError are being returned as .badRequest because the
+        // former triggers this error which... computers?
+        // Cannot infer contextual base in reference to member 'text'
+        
         guard let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
             logger.error("Failed to derive documents directory")
-            // return .internalServerError
             throw(Errors.fileManager)
         }
         
@@ -74,12 +78,12 @@ public class HTTPServer {
             
             guard let fileSaveUrl = NSURL(string: fname, relativeTo: documentsUrl) else {
                 self.logger.error("Failed to derive file save URL")
-                return .badRequest(.text("SAD"))
+                return .badRequest(.text("Failed to derive image data"))
             }
             
             guard data.write(to: fileSaveUrl as URL, atomically: true) else {
                 self.logger.error("Failed to write image data")
-                return .badRequest(.text("SAD"))
+                return .badRequest(.text("Failed to derive image data"))
             }
             
             defer {
@@ -108,7 +112,7 @@ public class HTTPServer {
             switch rsp {
             case .failure(let error):
                 self.logger.error("Failed to process image, \(error)")
-                return .badRequest(.text("SAD"))
+                return .badRequest(.text("Failed to process image"))
             case .success(let txt):
                 return .ok(.text(txt))
             }                        
