@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "swift-coregraphics-image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sfomuseum/swift-coregraphics-image.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8dc8e902b658c6cb05d97ea811f23a7df49e5fe7"
+      }
+    },
+    {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",
@@ -23,8 +32,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/sfomuseum/swift-text-emboss",
       "state" : {
-        "revision" : "ea588c67c5fa0c998d55c3b2fdaa20825700c85b",
-        "version" : "0.0.1"
+        "revision" : "27e026dae2ccb5221543ab335f958412ae184ef1",
+        "version" : "0.0.2"
       }
     },
     {
