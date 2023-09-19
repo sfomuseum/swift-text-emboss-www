@@ -74,12 +74,12 @@ public class HTTPServer {
             
             guard let fileSaveUrl = NSURL(string: fname, relativeTo: documentsUrl) else {
                 self.logger.error("Failed to derive file save URL")
-                return .internalServerError
+                return .badRequest(.text("SAD"))
             }
             
             guard data.write(to: fileSaveUrl as URL, atomically: true) else {
                 self.logger.error("Failed to write image data")
-                return .internalServerError
+                return .badRequest(.text("SAD"))
             }
             
             defer {
@@ -108,7 +108,7 @@ public class HTTPServer {
             switch rsp {
             case .failure(let error):
                 self.logger.error("Failed to process image, \(error)")
-                return .internalServerError
+                return .badRequest(.text("SAD"))
             case .success(let txt):
                 return .ok(.text(txt))
             }                        
@@ -117,7 +117,7 @@ public class HTTPServer {
         let semaphore = DispatchSemaphore(value: 0)
         
         do {
-            try server.start(uint16(self.port))
+            try server.start(UInt16(self.port))
             let _port = try server.port()
             
             logger.info("Server has started on port \(_port) and is listening for requests.")
