@@ -1,17 +1,21 @@
 import Logging
 import Swifter
 import TextEmboss
+import Foundation
+import CoreGraphics
+import CoreGraphicsImage
 
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
 public class HTTPServer {
     
     public var logger: Logger
-    public var threads: Int = 1
+    public var max_size: Int = 10000000 // bytes
     
     var host: String = "localhost"
     var port: Int = 1234
     
-    public init(logger: Logger, threads: Int) {
-        self.threads = threads
+    public init(logger: Logger, max_size: Int) {
+        self.max_size = max_size
         self.logger = logger
     }
     
@@ -31,19 +35,19 @@ public class HTTPServer {
         server.post["/"] = { r in
             
             guard let myFileMultipart = r.parseMultiPartFormData().filter({ $0.name == "image" }).first else {
-                logger.error("Request missing image parameter")
+                self.logger.error("Request missing image parameter")
                 return .badRequest(.text("Request missing image parameter"))
             }
             
-            if myFileMultipart.body.count > max_size {
-                logger.error("Request too large")
+            if myFileMultipart.body.count > self.max_size {
+                self.logger.error("Request too large")
                 return .badRequest(.text("Request too large"))
             }
             
             var ext = ""
             
             guard let content_type = myFileMultipart.headers["content-type"] else {
-                logger.error("Missing content type")
+                self.logger.error("Missing content type")
                 return .badRequest(.text("Missing content type"))
             }
             
@@ -57,7 +61,7 @@ public class HTTPServer {
             case "image/tiff":
                 ext = ".tiff"
             default:
-                logger.error("Unsupported content type \(String(describing: content_type))")
+                self.logger.error("Unsupported content type \(String(describing: content_type))")
                 return .badRequest(.text("Invalid format"))
             }
             
@@ -69,12 +73,12 @@ public class HTTPServer {
             }
             
             guard let fileSaveUrl = NSURL(string: fname, relativeTo: documentsUrl) else {
-                logger.error("Failed to derive file save URL")
+                self.logger.error("Failed to derive file save URL")
                 return .internalServerError
             }
             
             guard data.write(to: fileSaveUrl as URL, atomically: true) else {
-                logger.error("Failed to write image data")
+                self.logger.error("Failed to write image data")
                 return .internalServerError
             }
             
@@ -82,26 +86,28 @@ public class HTTPServer {
                 do {
                     try FileManager.default.removeItem(at: fileSaveUrl as URL)
                 } catch {
-                    logger.error("Failed to remove \(fileSaveUrl.path!), \(error)")
+                    self.logger.error("Failed to remove \(fileSaveUrl.path!), \(error)")
                 }
             }
             
-            guard let im = NSImage(byReferencingFile:fileSaveUrl.path!) else {
-                logger.error("Invalid image")
-                return .badRequest(.text("Invalid image"))
-            }
+            var cg_im: CGImage
+
+            let im_rsp = CoreGraphicsImage.LoadFromURL(url: fileSaveUrl as URL)
             
-            guard let cgImage = im.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
-                logger.error("Failed to derive CG image")
-                return .internalServerError
+            switch im_rsp {
+            case .failure(let error):
+                self.logger.error("Failed to load image, \(error)")
+                return .badRequest(.text("Invalid image"))
+            case .success(let im):
+                cg_im = im
             }
             
             let te = TextEmboss()
-            let rsp = te.ProcessImage(image: cgImage)
+            let rsp = te.ProcessImage(image: cg_im)
             
             switch rsp {
             case .failure(let error):
-                logger.error("Failed to process image, \(error)")
+                self.logger.error("Failed to process image, \(error)")
                 return .internalServerError
             case .success(let txt):
                 return .ok(.text(txt))
@@ -111,7 +117,7 @@ public class HTTPServer {
         let semaphore = DispatchSemaphore(value: 0)
         
         do {
-            try server.start(uint16(port))
+            try server.start(uint16(self.port))
             let _port = try server.port()
             
             logger.info("Server has started on port \(_port) and is listening for requests.")

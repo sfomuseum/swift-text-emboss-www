@@ -15,6 +15,7 @@ let package = Package(
         .package(url: "https://github.com/sfomuseum/swift-text-emboss", from: "0.0.2"),
         .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.5.0")),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
+        .package(url: "https://github.com/sfomuseum/swift-coregraphics-image.git", branch: "main")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -25,16 +26,19 @@ let package = Package(
                     .product(name: "ArgumentParser", package: "swift-argument-parser"),
                     .product(name: "TextEmboss", package: "swift-text-emboss"),
                     .product(name: "Swifter", package: "swifter"),
-                    .product(name: "Logging", package: "swift-log")
+                    .product(name: "Logging", package: "swift-log"),
+                    .product(name:"CoreGraphicsImage", package: "swift-coregraphics-image")
             ]
         ),
         .executableTarget(
             name: "text-emboss-server",
             dependencies: [
+                "TextEmbossHTTP",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 .product(name: "TextEmboss", package: "swift-text-emboss"),
                 .product(name: "Swifter", package: "swifter"),
-                .product(name: "Logging", package: "swift-log")
+                .product(name: "Logging", package: "swift-log"),
+                .product(name:"CoreGraphicsImage", package: "swift-coregraphics-image")
             ],
             path: "Scripts"
         )

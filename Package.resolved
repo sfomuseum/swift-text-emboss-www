@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "swift-coregraphics-image",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sfomuseum/swift-coregraphics-image.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "8dc8e902b658c6cb05d97ea811f23a7df49e5fe7"
+      }
+    },
+    {
       "identity" : "swift-log",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-log.git",

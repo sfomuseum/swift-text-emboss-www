@@ -7,7 +7,7 @@ import Logging
 
 
 
-@available(macOS 10.15, *)
+@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)
 struct TextEmbossServer: ParsableCommand {
     
     @Option(help: "The host name to listen for new connections")
@@ -23,11 +23,8 @@ struct TextEmbossServer: ParsableCommand {
         
         let logger = Logger(label: "org.sfomuseum.text-emboss-server")
 
-        let s = TextEmbossHTTP.HTTPServer(logger: logger)
-        
-        try s.Run(host: host, port:port)
-        
-        
+        let s = TextEmbossHTTP.HTTPServer(logger: logger, max_size: max_size)
+        try s.Run(host: host, port:port)            
     }
 }
 
