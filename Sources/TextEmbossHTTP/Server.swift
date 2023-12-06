@@ -38,6 +38,7 @@ public class HTTPServer {
         
         server.post["/"] = { r in
             
+
             guard let myFileMultipart = r.parseMultiPartFormData().filter({ $0.name == "image" }).first else {
                 self.logger.error("Request missing image parameter")
                 return .badRequest(.text("Request missing image parameter"))
@@ -113,9 +114,23 @@ public class HTTPServer {
             case .failure(let error):
                 self.logger.error("Failed to process image, \(error)")
                 return .badRequest(.text("Failed to process image"))
-            case .success(let txt):
-                return .ok(.text(txt))
-            }                        
+            case .success(let rsp):
+                
+                let enc = JSONEncoder()
+                var data: Data
+                
+                do {
+                    data = try enc.encode(rsp)
+                } catch {
+                    self.logger.error("Failed to process image, \(error)")
+                    return .badRequest(.text("Failed to encode result"))
+                }
+                
+                let str_data = String(data: data, encoding: .utf8)!
+                return .ok(.text(str_data))
+                
+                // return .ok(.text(rsp.text))
+            }
         }
         
         let semaphore = DispatchSemaphore(value: 0)

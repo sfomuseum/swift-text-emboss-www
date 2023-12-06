@@ -28,15 +28,6 @@
       }
     },
     {
-      "identity" : "swift-text-emboss",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/sfomuseum/swift-text-emboss",
-      "state" : {
-        "revision" : "27e026dae2ccb5221543ab335f958412ae184ef1",
-        "version" : "0.0.2"
-      }
-    },
-    {
       "identity" : "swifter",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/httpswift/swifter.git",
