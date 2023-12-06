@@ -12,8 +12,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"),
-        // .package(url: "https://github.com/sfomuseum/swift-text-emboss", from: "0.0.2"),
-        .package(name: "swift-text-emboss", path: "/usr/local/sfomuseum/swift-text-emboss"),
+        .package(url: "https://github.com/sfomuseum/swift-text-emboss", from: "0.0.3"),
+        // .package(name: "swift-text-emboss", path: "/usr/local/sfomuseum/swift-text-emboss"),
         .package(url: "https://github.com/httpswift/swifter.git", .upToNextMajor(from: "1.5.0")),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/sfomuseum/swift-coregraphics-image.git", branch: "main")

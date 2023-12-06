@@ -15,7 +15,7 @@
       "location" : "https://github.com/sfomuseum/swift-coregraphics-image.git",
       "state" : {
         "branch" : "main",
-        "revision" : "8dc8e902b658c6cb05d97ea811f23a7df49e5fe7"
+        "revision" : "97c53b177d590d561e720d7e2b5de2831904884c"
       }
     },
     {
@@ -25,6 +25,15 @@
       "state" : {
         "revision" : "532d8b529501fb73a2455b179e0bbb6d49b652ed",
         "version" : "1.5.3"
+      }
+    },
+    {
+      "identity" : "swift-text-emboss",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sfomuseum/swift-text-emboss",
+      "state" : {
+        "revision" : "5dfe63a82ecae91f9461054bf599bc22bd55dc82",
+        "version" : "0.0.3"
       }
     },
     {
