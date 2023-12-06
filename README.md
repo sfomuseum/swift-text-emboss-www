@@ -48,6 +48,21 @@ FROM THE COLLECTION OF THE OAKLAND MUSEUM AND PRIVATE COLLECTIONS
 SAN FRANCO INTERNATIONAL AIRPORT • NORTH TERMINAL STIR
 ```
 
+### JSON
+
+The return provenance and creation time for the text extracted from an image use the `/json` endpoint which will return a JSON-encoded dictionary containing that information.
+
+```
+$> curl -s -F image=@fixtures/sfomuseum-pin-2019.081.021.jpg http://localhost:8080/json | jq
+{
+  "created": 1701894618,
+  "text": "SANDY HERRMANN",
+  "source": "com.apple.visionkit.VNImageRequestHandler#Version 14.1.2 (Build 23B92)"
+}
+```
+
+Note: The `source` key is an arbitrary string used to identify the processes, or models, from which image text was derived. As of this writing this string has no standard formatting or requirements. If and when those conventions are established this package will be updated to use them.
+
 ## See also
 
 * https://github.com/sfomuseum/swift-text-emboss

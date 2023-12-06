@@ -23,7 +23,7 @@ struct TextEmbossServer: ParsableCommand {
         
         let logger = Logger(label: "org.sfomuseum.text-emboss-server")
 
-        let s = TextEmbossHTTP.HTTPServer(logger: logger, max_size: max_size)
+        let s = try TextEmbossHTTP.HTTPServer(logger: logger, max_size: max_size)
         try s.Run(host: host, port:port)            
     }
 }
